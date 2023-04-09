@@ -11,7 +11,7 @@ import UnoCSSIconButton from "~/components/Icon/UnoCSSIconButton.vue";
     <nav class="navbar w-full">
       <div class="flex flex-1 md:gap-1 lg:gap-2">
         <RouterLink
-          to="/"
+          to="/lowCode"
           aria-current="page"
           aria-label="Homepage"
           class="btn-ghost btn px-2"
@@ -19,8 +19,8 @@ import UnoCSSIconButton from "~/components/Icon/UnoCSSIconButton.vue";
           <div
             class="inline-flex text-lg text-primary transition-all duration-200 md:text-3xl"
           >
-            <span class="text-accent">V<span class="lowercase">ite</span></span>
-            <span class="text-base-content">B<span class="lowercase">oot</span></span>
+            <span class="text-accent">L<span class="lowercase">ow</span></span>
+            <span class="text-base-content">C<span class="lowercase">ode</span></span>
           </div>
         </RouterLink>
       </div>

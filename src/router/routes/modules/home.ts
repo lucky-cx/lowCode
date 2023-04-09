@@ -1,7 +1,8 @@
 const home = [{
   path: "/home",
   name: "Home",
-  component: () => import("~/views/home/index.vue"),
+  // component: () => import("~/views/home/index.vue"),
+  component: () => import("~/views/home/components/lowCodeContainer.vue"),
   meta: {
     title: "Home",
   },
@@ -15,6 +16,12 @@ const home = [{
   path: "/StoreTest",
   name: "StoreTest",
   component: () => import("~/views/home/components/StoreTest.vue"),
+},
+
+{
+  path: "/lowCode",
+  name: "lowCode",
+  component: () => import("~/views/home/components/lowCodeContainer.vue"),
 },
 ];
 
