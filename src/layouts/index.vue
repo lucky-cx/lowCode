@@ -1,7 +1,3 @@
-<script setup lang="ts">
-import Navbar from "./Navbar/index.vue";
-</script>
-
 <template>
   <div class="font-chinese antialiased">
     <div class="min-h-screen">
@@ -12,6 +8,8 @@ import Navbar from "./Navbar/index.vue";
   </div>
 </template>
 
-<style scoped>
+<script setup lang="ts">
+import Navbar from "./Navbar/index.vue";
+</script>
 
-</style>
+<style scoped></style>

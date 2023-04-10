@@ -1,7 +1,9 @@
 <template>
   <div class="low-code-box">
     <div class="node-material">
-      物料区
+      <TButton type="button">
+        default按钮
+      </TButton>
     </div>
     <div class="node-container">
       布局区
