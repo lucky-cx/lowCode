@@ -4,9 +4,7 @@ export default {
 };
 </script>
 
-<script lang="ts" setup>
-
-</script>
+<script lang="ts" setup></script>
 
 <template>
   <div class="low-code-box">
@@ -22,29 +20,29 @@ export default {
   </div>
 </template>
 
-<style>
+<style lang="scss">
 .low-code-box {
   display: flex;
   border-top: 2px solid #f2f2f2;
-}
 
-.node-material {
-  width: 300px;
-  height: 900px;
-  background-color: #f2f2f2;
-  padding: 10px;
-}
+  .node-material {
+    width: 300px;
+    height: 900px;
+    background-color: #f2f2f2;
+    padding: 10px;
+  }
 
-.node-container {
-  background-color: white;
-  flex: 1;
-  padding: 10px;
-}
+  .node-container {
+    background-color: white;
+    flex: 1;
+    padding: 10px;
+  }
 
-.node-config {
-  width: 300px;
-  height: 900px;
-  background-color: #f2f2f2;
-  padding: 10px;
+  .node-config {
+    width: 300px;
+    height: 900px;
+    background-color: #f2f2f2;
+    padding: 10px;
+  }
 }
 </style>
