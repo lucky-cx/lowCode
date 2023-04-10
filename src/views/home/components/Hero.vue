@@ -1,13 +1,3 @@
-<script setup lang="ts">
-const router = useRouter();
-
-const testStore = () => {
-  router.push({
-    name: "StoreTest",
-  });
-};
-</script>
-
 <template>
   <div class="hero mt-[-4rem] min-h-screen text-primary-content">
     <!--  <div class="hero min-h-screen from-primary to-secondary" style="background-image: url(https://img.js.design/assets/Resources/background/home-bg-2.png);"> -->
@@ -27,5 +17,15 @@ const testStore = () => {
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+const router = useRouter();
+
+const testStore = () => {
+  router.push({
+    name: "StoreTest",
+  });
+};
+</script>
 
 <style scoped></style>

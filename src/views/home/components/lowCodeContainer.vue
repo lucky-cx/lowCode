@@ -1,11 +1,3 @@
-<script lang="ts">
-export default {
-  name: "LowCodeContainer",
-};
-</script>
-
-<script lang="ts" setup></script>
-
 <template>
   <div class="low-code-box">
     <div class="node-material">
@@ -19,6 +11,14 @@ export default {
     </div>
   </div>
 </template>
+
+<script lang="ts">
+export default {
+  name: "LowCodeContainer",
+};
+</script>
+
+<script lang="ts" setup></script>
 
 <style lang="scss">
 .low-code-box {
