@@ -13,6 +13,7 @@ import App from "~/App.vue";
 // reset css
 import "@kirklin/reset-css/kirklin.css";
 import "~/styles/main.css";
+import { registerGloalComponent } from "~/utils/registerCompent";
 import "uno.css";
 
 // 引入组件库全局样式资源
@@ -37,4 +38,8 @@ app.use(
 app.use(createPinia());
 registerStore();
 app.use(router);
+
+// 注册全局组件
+registerGloalComponent(app);
+
 app.mount("#app");
