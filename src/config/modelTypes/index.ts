@@ -22,6 +22,7 @@ interface MateriaNode {
 }
 
 interface M_Field_Init {
+  label: string;
   name: string;
   icon: string;
   ctype: string;

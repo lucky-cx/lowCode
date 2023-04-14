@@ -31,21 +31,23 @@
         :sort="true"
         class="panel"
       >
-        <template #item="{ element }">
-          <div class="panel-item">
-            <Component :is="element.ctype" v-bind="element" />
+        <template #item="{ element, index }">
+          <div class="panel-item" :class="activeClass(element)" @click="activeClick(element)">
+            <Component :is="element.ctype" v-bind="element" class="item-box" />
+            <TIcon name="delete" style="color: red" @click="deleteIcon(index)" />
           </div>
         </template>
       </Draggable>
     </div>
     <div class="node-config">
-      属性区
+      <div>属性区</div>
+      <div>{{ activeNode }}</div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { cloneDeep } from "lodash";
+import { cloneDeep, pullAt } from "lodash";
 import { getRandomCode } from "~/utils/tools";
 import appStore from "~/store";
 
@@ -56,8 +58,20 @@ export default {
 
 <script lang="ts" setup>
 const store = appStore;
+const activeNode: Partial<M_Field_Init> = ref();
+
 window.console.log("store -->", store);
 const initializing = ref(store.material.materialInitData);
+const activeSchema = computed(() => {
+  const activeComponentName = activeNode.value?.name;
+  if (!activeComponentName) {
+    return;
+  }
+  const data = store.material.materialJsonFiedls[activeComponentName];
+  return data;
+});
+window.console.log("activeSchema -->", activeSchema);
+
 const nodelist = ref([]);
 // const testComponent = ref("t-input");
 const handleClone = (model: any) => {
@@ -65,9 +79,27 @@ const handleClone = (model: any) => {
     ...cloneDeep(model),
     id: getRandomCode(8),
   };
-  window.console.log("data -->", data);
   return data;
 };
+
+const deleteIcon = (index: number) => {
+  pullAt(nodelist.value, index);
+};
+
+const activeClick = (element: Partial<M_Field_Init>) => {
+  activeNode.value = element;
+};
+
+const activeClass = computed((element: Partial<M_Field_Init>) => {
+  return (element: Partial<M_Field_Init>) => {
+    const className = element.id === activeNode.value?.id ? "active-item" : "";
+    return className;
+  };
+});
+
+watch(activeNode, (val) => {
+  window.console.log(" watch activeNode-->", val);
+});
 </script>
 
 <style lang="scss">
@@ -90,12 +122,24 @@ const handleClone = (model: any) => {
       width: 100%;
       max-width: 1500px;
       height: 100vh;
+      padding: 10px;
       border: 1px solid black;
+
       .panel-item {
-        display: inline-block;
+        display: inline-flex;
         width: 100%;
-        padding: 20px;
-        background-color: antiquewhite;
+        padding: 10px;
+        // background-color: antiquewhite;
+        align-items: center;
+        margin-bottom: 10px;
+        .item-box {
+          margin-right: 10px;
+        }
+      }
+
+      .active-item {
+        background-color: #a4e4d7;
+        box-shadow: 2px 2px 5px #000;
       }
     }
   }
