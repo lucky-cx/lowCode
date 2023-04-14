@@ -1,4 +1,5 @@
 import { counter } from "./counter";
+import { material } from "./material";
 
 const appStore: any = {};
 
@@ -7,6 +8,7 @@ const appStore: any = {};
  */
 export const registerStore = () => {
   appStore.counter = counter();
+  appStore.material = material();
 };
 
 export default appStore;

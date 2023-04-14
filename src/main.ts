@@ -5,6 +5,7 @@ import { createPinia } from "pinia";
 import { createI18n } from "vue-i18n";
 
 import TDesign from "tdesign-vue-next";
+import draggable from "vuedraggable";
 import { router } from "./router";
 
 import { registerStore } from "./store";
@@ -14,6 +15,7 @@ import App from "~/App.vue";
 import "@kirklin/reset-css/kirklin.css";
 import "~/styles/main.css";
 import { registerGloalComponent } from "~/utils/registerCompent";
+import { registerComponentsSchema } from "~/utils/registerMaterialModel";
 import "uno.css";
 
 // 引入组件库全局样式资源
@@ -41,5 +43,9 @@ app.use(router);
 
 // 注册全局组件
 registerGloalComponent(app);
+// 注册物料节点
+registerComponentsSchema();
+
+app.component("Draggable", draggable);
 
 app.mount("#app");

@@ -1,5 +1,3 @@
-// import Vue from "vue";
-
 // /***
 //  *
 //  *  1、该文件需要注册，物料模型的 json 描述（是否可以换成 ts 文件返回 json 格式数据的形式）
@@ -7,45 +5,51 @@
 //  *  3、将模型定义本身，放置到 store 中（之前是在全局挂载）
 //  */
 
-// // 注册所有物料属性参数与初始值
-// registerComponentsSchema();
+import appStore from "~/store";
 
-// // 获取所有自定义组件schema
-// function registerComponentsSchema() {
-//   const files = require.context("@/custom-components", true, /component.json$/);
-//   const fields = {};
-//   const initializing = [];
+// 初始化组件初始数据
+function initDefaulValue(config: MateriaNode) {
+  const { label, ctype, name, icon, fields } = config;
+  const initializing = { ctype, name, icon, label };
+  setDefaultValue(fields, initializing);
+  return initializing;
+}
 
-//   files.keys().forEach((key) => {
-//     const [, name] = key.split("/");
-//     const config = { component: name, ...files(key) };
-//     console.log(config);
+// 递归设置各层级初始数据
+function setDefaultValue(fields: M_FieldNode, initializing: M_Field_Init) {
+  for (const key in fields) {
+    const { ctype, value, child } = fields[key];
+    if (ctype === "object" && child) {
+      initializing[key] = {};
+      setDefaultValue(child, initializing[key]);
+    } else {
+      initializing[key] = value;
+    }
+  }
+  return initializing;
+}
 
-//     fields[name] = config.fields;
-//     initializing.push(initDefaulValue(config));
-//   });
-//   Vue.prototype.$fields = fields;
-//   Vue.prototype.$initializing = initializing;
-// }
+// 获取模型文件信息
+const materialJsonFields: Record<string, MateriaNode> = import.meta.glob("~/config/materialModel/*.ts", { import: "default", eager: true });
+window.console.log(" materialJsonFields-->", materialJsonFields);
+// 1、将模型的结构信息，存储到 store
+// 2、根据模型的结构信息，生成初始化数据，存储到 store ，对应给画布区域组件的属性设置
+export function registerComponentsSchema(): void {
+  const files = materialJsonFields;
+  const fields: Record<string, MateriaNode> = {};
+  const initDatas = [];
 
-// // 初始化组件初始数据
-// function initDefaulValue(config) {
-//   const { component, name, icon, fields } = config;
-//   const temp = { component, name, icon };
-//   setDefaultValue(fields, temp);
-//   return temp;
-// }
+  for (const path in files) {
+    const filesValue: MateriaNode = files[path];
+    const componentName = filesValue.name;
+    if (componentName && filesValue) {
+      fields[componentName] = filesValue;
+      initDatas.push(initDefaulValue(filesValue));
+    }
+  }
 
-// // 递归设置各层级初始数据
-// function setDefaultValue(fields, initializing) {
-//   for (const key in fields) {
-//     const { type, value, child } = fields[key];
-//     if (type == "object") {
-//       initializing[key] = {};
-//       child && setDefaultValue(fields[key].child, initializing[key]);
-//     } else {
-//       initializing[key] = value;
-//     }
-//   }
-//   return initializing;
-// }
+  window.console.log(" registerComponentsSchema store -->", appStore);
+  appStore.material.setJsonFields(fields); // json 结构信息  --> store
+  appStore.material.setMaterialInitData(initDatas); // 各个文件的初始化数据 --> store
+  window.console.log("initDatas -->", initDatas);
+}

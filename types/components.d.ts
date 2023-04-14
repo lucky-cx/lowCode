@@ -10,6 +10,7 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     MaterialNodeTemplate: typeof import('./../src/components/templateRenderCompents/materialNodeTemplate.vue')['default']
+    Mr_title: typeof import('./../src/components/templateRenderCompents/mr_title.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     UnoCSSIconButton: typeof import('./../src/components/Icon/UnoCSSIconButton.vue')['default']
