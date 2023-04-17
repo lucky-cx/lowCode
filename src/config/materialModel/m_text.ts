@@ -12,21 +12,25 @@ export default {
       ctype: M_ATTRS_TO_COMPENT.TEXT,
       value: "LOWCODE TEXT",
     },
-    // model: {
-    //   displayName: "布局选择",
-    //   ctype: M_ATTRS_TO_COMPENT.SELECT,
-    //   value: "left",
-    //   options: [
-    //     {
-    //       displayName: "居左",
-    //       value: "left",
-    //     },
-    //     {
-    //       displayName: "居中",
-    //       value: "center",
-    //     },
-    //   ],
-    // },
+    size: {
+      displayName: "组件尺寸",
+      ctype: M_ATTRS_TO_COMPENT.SELECT,
+      value: "medium",
+      options: [
+        {
+          displayName: "small",
+          value: "small",
+        },
+        {
+          displayName: "medium",
+          value: "medium",
+        },
+        {
+          displayName: "large",
+          value: "large",
+        },
+      ],
+    },
     // styles: {
     //   displayName: "标题样式",
     //   ctype: M_ATTRS_TO_COMPENT.OBJECT,
