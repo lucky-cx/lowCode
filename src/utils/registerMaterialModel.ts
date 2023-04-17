@@ -9,8 +9,8 @@ import appStore from "~/store";
 
 // 初始化组件初始数据
 function initDefaulValue(config: MateriaNode) {
-  const { label, ctype, name, icon, fields } = config;
-  const initializing = { ctype, name, icon, label };
+  const { displayName, ctype, name, icon, fields } = config;
+  const initializing = { ctype, name, icon, displayName };
   setDefaultValue(fields, initializing);
   return initializing;
 }

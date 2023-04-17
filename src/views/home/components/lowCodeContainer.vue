@@ -14,11 +14,12 @@
             <template #icon>
               <TIcon :name="element.icon" />
             </template>
-            <span>{{ element.label }}</span>
+            <span>{{ element.displayName }}</span>
           </TButton>
         </template>
       </Draggable>
     </div>
+    <!-- 中间画布区域 -->
     <div class="node-container">
       <Draggable
         v-model="nodelist"
@@ -33,21 +34,63 @@
       >
         <template #item="{ element, index }">
           <div class="panel-item" :class="activeClass(element)" @click="activeClick(element)">
-            <Component :is="element.ctype" v-bind="element" class="item-box" />
-            <TIcon name="delete" style="color: red" @click="deleteIcon(index)" />
+            <!-- <span>
+              {{ element.displayName }}
+            </span> -->
+            <Component
+              :is="element.ctype"
+              v-bind="element"
+              v-model="element.value"
+              class="item-box"
+            />
+            <span @click.stop="deleteIcon(index)">
+              <TIcon name="delete" class="delete-icon" style="color: red" />
+            </span>
           </div>
         </template>
       </Draggable>
     </div>
     <div class="node-config">
       <div>属性区</div>
-      <div>{{ activeNode }}</div>
+      <TDivider align="center" dashed />
+      <!-- <div>{{ activeNode }}</div> -->
+
+      <div v-for="(itemKeyName, index) in keys(activeSchema)" :key="index">
+        <div v-if="activeSchema[itemKeyName].ctype !== 'object'">
+          <span>
+            {{ activeSchema[itemKeyName].displayName }}
+          </span>
+          <Component
+            :is="activeSchema[itemKeyName].ctype"
+            v-bind="activeSchema[itemKeyName]"
+            v-model="activeNode[itemKeyName]"
+            class="item-box"
+          />
+        </div>
+        <div v-else>
+          <span>
+            {{ `${activeSchema[itemKeyName].displayName}` }}
+          </span>
+          <div
+            v-for="(objKey, o_index) in keys(activeSchema[itemKeyName].child)"
+            :key="o_index"
+            class="item-box"
+          >
+            <span>{{ `${activeSchema[itemKeyName].child[objKey].displayName}` }}</span>
+            <Component
+              :is="activeSchema[itemKeyName].child[objKey].ctype"
+              v-model="activeNode[itemKeyName][objKey]"
+              class="item-box"
+            />
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { cloneDeep, pullAt } from "lodash";
+import { cloneDeep, keys, pullAt } from "lodash";
 import { getRandomCode } from "~/utils/tools";
 import appStore from "~/store";
 
@@ -58,19 +101,20 @@ export default {
 
 <script lang="ts" setup>
 const store = appStore;
-const activeNode: Partial<M_Field_Init> = ref();
+const activeNode = ref();
 
-window.console.log("store -->", store);
+console.log("store -->", store);
 const initializing = ref(store.material.materialInitData);
+
 const activeSchema = computed(() => {
   const activeComponentName = activeNode.value?.name;
   if (!activeComponentName) {
     return;
   }
   const data = store.material.materialJsonFiedls[activeComponentName];
-  return data;
+  return data.fields;
 });
-window.console.log("activeSchema -->", activeSchema);
+console.log("activeSchema -->", activeSchema);
 
 const nodelist = ref([]);
 // const testComponent = ref("t-input");
@@ -82,8 +126,9 @@ const handleClone = (model: any) => {
   return data;
 };
 
-const deleteIcon = (index: number) => {
+const deleteIcon = async (index: number) => {
   pullAt(nodelist.value, index);
+  activeNode.value = null;
 };
 
 const activeClick = (element: Partial<M_Field_Init>) => {
@@ -97,8 +142,12 @@ const activeClass = computed((element: Partial<M_Field_Init>) => {
   };
 });
 
+watch(activeSchema, (val) => {
+  console.log(" watch activeSchema-->", val);
+});
+
 watch(activeNode, (val) => {
-  window.console.log(" watch activeNode-->", val);
+  console.log(" watch activeNode-->", activeNode);
 });
 </script>
 
@@ -131,9 +180,13 @@ watch(activeNode, (val) => {
         padding: 10px;
         // background-color: antiquewhite;
         align-items: center;
+        justify-content: space-between;
         margin-bottom: 10px;
         .item-box {
           margin-right: 10px;
+          .delete-icon {
+            margin-right: 10px;
+          }
         }
       }
 
