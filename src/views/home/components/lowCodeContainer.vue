@@ -51,40 +51,49 @@
       </Draggable>
     </div>
     <div class="node-config">
-      <div>属性区</div>
-      <TDivider align="center" dashed />
-      <!-- <div>{{ activeNode }}</div> -->
-
-      <div v-for="(itemKeyName, index) in keys(activeSchema)" :key="index">
-        <div v-if="activeSchema[itemKeyName].ctype !== 'object'">
-          <span>
-            {{ activeSchema[itemKeyName].displayName }}
-          </span>
-          <Component
-            :is="activeSchema[itemKeyName].ctype"
-            v-bind="activeSchema[itemKeyName]"
-            v-model="activeNode[itemKeyName]"
-            class="item-box"
-          />
-        </div>
-        <div v-else>
-          <span>
-            {{ `${activeSchema[itemKeyName].displayName}` }}
-          </span>
-          <div
-            v-for="(objKey, o_index) in keys(activeSchema[itemKeyName].child)"
-            :key="o_index"
-            class="item-box"
-          >
-            <span>{{ `${activeSchema[itemKeyName].child[objKey].displayName}` }}</span>
-            <Component
-              :is="activeSchema[itemKeyName].child[objKey].ctype"
-              v-model="activeNode[itemKeyName][objKey]"
-              class="item-box"
-            />
+      <TTabs v-model="tabPanelValue">
+        <!-- 默认插槽 和 具名插槽（panel）都是用来渲染面板内容 -->
+        <TTabPanel
+          value="configSet"
+          label="属性设置"
+          :destroy-on-hide="false"
+          class="tabPanelContainer"
+        >
+          <div v-for="(itemKeyName, index) in keys(activeSchema)" :key="index">
+            <div v-if="activeSchema[itemKeyName].ctype !== 'object'">
+              <span>
+                {{ activeSchema[itemKeyName].displayName }}
+              </span>
+              <Component
+                :is="activeSchema[itemKeyName].ctype"
+                v-bind="activeSchema[itemKeyName]"
+                v-model="activeNode[itemKeyName]"
+                class="item-box"
+              />
+            </div>
+            <div v-else>
+              <span>
+                {{ `${activeSchema[itemKeyName].displayName}` }}
+              </span>
+              <div
+                v-for="(objKey, o_index) in keys(activeSchema[itemKeyName].child)"
+                :key="o_index"
+                class="item-box"
+              >
+                <span>{{ `${activeSchema[itemKeyName].child[objKey].displayName}` }}</span>
+                <Component
+                  :is="activeSchema[itemKeyName].child[objKey].ctype"
+                  v-model="activeNode[itemKeyName][objKey]"
+                  class="item-box"
+                />
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        </TTabPanel>
+        <TTabPanel value="page" label="页面" :destroy-on-hide="false" class="tabPanelContainer">
+          <p>页面属性设置</p>
+        </TTabPanel>
+      </TTabs>
     </div>
   </div>
 </template>
@@ -117,6 +126,7 @@ const activeSchema = computed(() => {
 console.log("activeSchema -->", activeSchema);
 
 const nodelist = ref([]);
+
 // const testComponent = ref("t-input");
 const handleClone = (model: any) => {
   const data = {
@@ -131,12 +141,13 @@ const deleteIcon = async (index: number) => {
   activeNode.value = null;
 };
 
-const activeClick = (element: Partial<M_Field_Init>) => {
+const activeClick = (element: Partial<ENode>) => {
   activeNode.value = element;
+  tabPanelValue.value = "configSet";
 };
 
-const activeClass = computed((element: Partial<M_Field_Init>) => {
-  return (element: Partial<M_Field_Init>) => {
+const activeClass = computed((element: Partial<ENode>) => {
+  return (element: Partial<ENode>) => {
     const className = element.id === activeNode.value?.id ? "active-item" : "";
     return className;
   };
@@ -149,6 +160,8 @@ watch(activeSchema, (val) => {
 watch(activeNode, (val) => {
   console.log(" watch activeNode-->", activeNode);
 });
+
+const tabPanelValue = ref("configSet");
 </script>
 
 <style lang="scss">
@@ -158,7 +171,7 @@ watch(activeNode, (val) => {
 
   .node-material {
     width: 300px;
-    height: 900px;
+    height: 850px;
     background-color: #f2f2f2;
     padding: 10px;
   }
@@ -170,7 +183,7 @@ watch(activeNode, (val) => {
     .panel {
       width: 100%;
       max-width: 1500px;
-      height: 100vh;
+      height: 850px;
       padding: 10px;
       border: 1px solid black;
 
@@ -199,9 +212,13 @@ watch(activeNode, (val) => {
 
   .node-config {
     width: 300px;
-    height: 900px;
+    height: 850px;
     background-color: #f2f2f2;
     padding: 10px;
+    .tabPanelContainer {
+      height: 850px;
+      padding: 10px;
+    }
   }
 
   .node-item {

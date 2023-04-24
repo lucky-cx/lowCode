@@ -16,7 +16,7 @@ function initDefaulValue(config: MateriaNode) {
 }
 
 // 递归设置各层级初始数据
-function setDefaultValue(fields: M_FieldNode, initializing: M_Field_Init) {
+function setDefaultValue(fields: M_FieldNode, initializing: ENode) {
   for (const key in fields) {
     const { ctype, value, child } = fields[key];
     if (ctype === "object" && child) {
@@ -30,7 +30,10 @@ function setDefaultValue(fields: M_FieldNode, initializing: M_Field_Init) {
 }
 
 // 获取模型文件信息
-const materialJsonFields: Record<string, MateriaNode> = import.meta.glob("~/config/materialModel/*.ts", { import: "default", eager: true });
+const materialJsonFields: Record<string, MateriaNode> = import.meta.glob(
+  "~/config/materialModel/*.ts",
+  { import: "default", eager: true },
+);
 window.console.log(" materialJsonFields-->", materialJsonFields);
 // 1、将模型的结构信息，存储到 store
 // 2、根据模型的结构信息，生成初始化数据，存储到 store ，对应给画布区域组件的属性设置

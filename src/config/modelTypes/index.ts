@@ -3,7 +3,7 @@ interface OptionNode {
   value: string;
 }
 
-interface MateriaNodeField {
+interface MateriaNode {
   displayName: string;
   ctype: string;
   value: string | number;
@@ -11,7 +11,7 @@ interface MateriaNodeField {
   child: M_FieldNode;
 }
 
-type M_FieldNode = Record<string, Partial<MateriaNodeField>>;
+type M_FieldNode = Record<string, Partial<MateriaNode>>;
 
 interface MateriaNode {
   displayName: string;
@@ -21,10 +21,16 @@ interface MateriaNode {
   fields: M_FieldNode;
 }
 
-interface M_Field_Init {
+interface ENode {
   displayName: string;
   name: string;
   icon: string;
   ctype: string;
+  [key: string]: any;
+}
+
+interface EPage {
+  title: string;
+  child: ENode[];
   [key: string]: any;
 }
