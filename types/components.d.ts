@@ -10,6 +10,9 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     ConfigItemTemplate: typeof import('./../src/components/templateRenderCompents/configItemTemplate.vue')['default']
+    copy: typeof import('./../src/components/templateRenderCompents/mr_title copy.vue')['default']
+    M_image: typeof import('./../src/components/templateRenderCompents/m_image.vue')['default']
+    M_pUpload: typeof import('./../src/components/templateRenderCompents/m_pUpload.vue')['default']
     MaterialNodeTemplate: typeof import('./../src/components/templateRenderCompents/materialNodeTemplate.vue')['default']
     Mr_title: typeof import('./../src/components/templateRenderCompents/mr_title.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
