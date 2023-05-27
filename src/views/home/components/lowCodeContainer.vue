@@ -68,6 +68,7 @@
                 :is="activeSchema[itemKeyName].ctype"
                 v-bind="activeSchema[itemKeyName]"
                 v-model="activeNode[itemKeyName]"
+                :m-context="activeNode"
                 class="item-box"
               />
             </div>
@@ -102,6 +103,7 @@
 import { cloneDeep, keys, pullAt } from "lodash";
 import { getRandomCode } from "~/utils/tools";
 import appStore from "~/store";
+import type { ENode } from "~/config/modelTypes";
 
 export default {
   name: "LowCodeContainer",

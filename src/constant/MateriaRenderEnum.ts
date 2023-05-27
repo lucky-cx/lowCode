@@ -4,6 +4,7 @@ export enum MATERIAL_TO_COMPENT {
   SELECT = "t-select",
   NUMBER = "t-input-number",
   IMAGE = "MIMAGE",
+  BUTTON = "MButon",
 }
 // 属性面板，属性到组件动态生成，组件对应
 export enum M_ATTRS_TO_COMPENT {
@@ -11,4 +12,5 @@ export enum M_ATTRS_TO_COMPENT {
   SELECT = "t-select",
   NUMBER = "t-input-number",
   OBJECT = "object",
+  PREVIEWBUTTON = "PrewButton",
 }

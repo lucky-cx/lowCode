@@ -6,9 +6,11 @@ import { createI18n } from "vue-i18n";
 
 import TDesign from "tdesign-vue-next";
 import draggable from "vuedraggable";
+import mitt from "mitt";
 import { router } from "./router";
 
 import { registerStore } from "./store";
+import { initCommonEvent } from "./commonEvent/eventActuator";
 import App from "~/App.vue";
 
 // reset css
@@ -21,14 +23,18 @@ import "uno.css";
 // 引入组件库全局样式资源
 import "tdesign-vue-next/es/style/index.css";
 
+// 引入全局事件模型
+
 const app = createApp(App);
 
 app.use(TDesign);
 
 const messages = Object.fromEntries(
-  Object.entries(import.meta.glob<{ default: any }>("./locales/*.json", { eager: true })).map(([key, value]) => {
-    return [key.slice(10, -5), value.default];
-  }),
+  Object.entries(import.meta.glob<{ default: any }>("./locales/*.json", { eager: true })).map(
+    ([key, value]) => {
+      return [key.slice(10, -5), value.default];
+    },
+  ),
 );
 app.use(
   createI18n({
@@ -47,5 +53,8 @@ registerGloalComponent(app);
 registerComponentsSchema();
 
 app.component("Draggable", draggable);
+const Evenbus = mitt();
+app.config.globalProperties.Bus = Evenbus;
+initCommonEvent(Evenbus);
 
 app.mount("#app");

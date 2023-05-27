@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TImage :src="value" v-bind="$attrs" :style="styles" />
+    <TImage :src="modelValue" v-bind="$attrs" :style="styles" />
   </div>
 </template>
 
@@ -8,7 +8,7 @@
 export default {
   name: "MIMAGE",
   props: {
-    value: {
+    modelValue: {
       type: String,
     },
     styles: {
@@ -19,6 +19,7 @@ export default {
       },
     },
   },
+  emits: ["update:modelValue"],
 };
 </script>
 

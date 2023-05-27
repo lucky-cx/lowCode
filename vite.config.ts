@@ -11,10 +11,13 @@ import VueMacros from "unplugin-vue-macros/vite";
 // vite.config.ts
 import VueI18nPlugin from "@intlify/unplugin-vue-i18n/vite";
 import UnoCss from "unocss/vite";
+import VueSetupExtend from "vite-plugin-vue-setup-extend";
+
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
-    host: "localhost",
+    // host: "localhost",
+    host: "0.0.0.0",
     port: 8888,
     open: true,
     https: false,
@@ -41,19 +44,9 @@ export default defineConfig({
     }),
     // https://github.com/antfu/unplugin-auto-import
     AutoImport({
-      imports: [
-        "vue",
-        "vue-router",
-        "vue-i18n",
-        "vue/macros",
-        "@vueuse/head",
-        "@vueuse/core",
-      ],
+      imports: ["vue", "vue-router", "vue-i18n", "vue/macros", "@vueuse/head", "@vueuse/core"],
       dts: "types/auto-imports.d.ts",
-      dirs: [
-        "src/composables",
-        "src/store",
-      ],
+      dirs: ["src/composables", "src/store"],
       vueTemplate: true,
     }),
 
@@ -63,9 +56,7 @@ export default defineConfig({
       include: [/\.vue$/, /\.vue\?vue/],
       dts: "types/components.d.ts",
       exclude: [/[\\/]node_modules[\\/]/, /[\\/]\.git[\\/]/, /[\\/]\.nuxt[\\/]/],
-      resolvers: [
-        IconsResolver(),
-      ],
+      resolvers: [IconsResolver()],
     }),
 
     // https://github.com/intlify/bundle-tools/tree/main/packages/unplugin-vue-i18n
@@ -87,11 +78,10 @@ export default defineConfig({
 
     // https://github.com/unocss/unocss
     // see unocss.config.ts for config
-    UnoCss(
-      {
-        configFile: resolve(__dirname, "src/config/unocss/index.ts"),
-      },
-    ),
+    UnoCss({
+      configFile: resolve(__dirname, "src/config/unocss/index.ts"),
+    }),
+    VueSetupExtend(),
   ],
   resolve: {
     alias: {

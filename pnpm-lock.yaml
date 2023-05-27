@@ -22,6 +22,7 @@ specifiers:
   jsdom: ^21.1.1
   lint-staged: ^13.2.0
   lodash: ^4.17.21
+  mitt: ^3.0.0
   nprogress: ^0.2.0
   pinia: ^2.0.33
   pnpm: ^8.1.1
@@ -53,6 +54,7 @@ dependencies:
   '@vueuse/core': registry.npmmirror.com/@vueuse/core/9.13.0_vue@3.2.47
   daisyui: registry.npmmirror.com/daisyui/2.51.5
   lodash: registry.npmmirror.com/lodash/4.17.21
+  mitt: registry.npmmirror.com/mitt/3.0.0
   nprogress: registry.npmmirror.com/nprogress/0.2.0
   pinia: registry.npmmirror.com/pinia/2.0.34_dtjfskxukdxv24psui2m5c75zy
   tdesign-vue-next: registry.npmmirror.com/tdesign-vue-next/1.2.3_vue@3.2.47

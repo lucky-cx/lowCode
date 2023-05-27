@@ -21,7 +21,7 @@ interface MateriaNode {
   fields: M_FieldNode;
 }
 
-interface ENode {
+export interface ENode {
   displayName: string;
   name: string;
   icon: string;
@@ -29,8 +29,28 @@ interface ENode {
   [key: string]: any;
 }
 
-interface EPage {
+export interface EPage {
   title: string;
   child: ENode[];
   [key: string]: any;
+}
+
+export enum COMMON_EVENT_TRIGGER {
+  CLICK = "click",
+}
+
+export enum COMMON_EVENT_TYPE {
+  ALERT = "alert",
+  OPEN = "open",
+}
+
+export enum COMMON_EVENT_NAME {
+  COMMON = "MCommonEvent",
+}
+
+export interface CommonEventModel {
+  name: COMMON_EVENT_NAME;
+  trigger: COMMON_EVENT_TRIGGER;
+  type: COMMON_EVENT_TYPE;
+  data: {};
 }
