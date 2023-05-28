@@ -29,10 +29,11 @@ const getCurrentData = () => {
 
 const clickHandler = () => {
   // 发起 event bus 的事件，在全局中监听，按配置进行触发
+  // console.log("props.mContext -->", props.mContext);
   const data = {
     name: "MCommonEvent",
     trigger: "click",
-    type: "alert",
+    type: props.mContext?.typeCode,
     data: getCurrentData(),
   };
 

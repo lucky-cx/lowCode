@@ -32,12 +32,18 @@ export default {
       displayName: "弹窗内容",
       ctype: M_ATTRS_TO_COMPENT.TEXT,
       value: "弹窗测试内容",
+      editor: {
+        hide: "context.typeCode === 'alert'",
+      },
     },
 
     address: {
       displayName: "新开地址",
       ctype: M_ATTRS_TO_COMPENT.TEXT,
       value: "http://wwww.baidu.com",
+      editor: {
+        hide: "context.typeCode === 'open'",
+      },
     },
 
     preView: {

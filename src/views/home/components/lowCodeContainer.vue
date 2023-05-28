@@ -2,12 +2,8 @@
   <div class="low-code-box">
     <div class="node-material">
       <Draggable
-        v-model="initializing"
-        item-key="name"
-        :group="{ name: 'itxst', pull: 'clone' }"
-        :sort="false"
-        :clone="handleClone"
-        animation="300"
+        v-model="initializing" item-key="name" :group="{ name: 'itxst', pull: 'clone' }" :sort="false"
+        :clone="handleClone" animation="300"
       >
         <template #item="{ element }">
           <TButton type="button" class="node-item">
@@ -22,27 +18,15 @@
     <!-- 中间画布区域 -->
     <div class="node-container">
       <Draggable
-        v-model="nodelist"
-        item-key="id"
-        group="itxst"
-        ghost-class="ghost"
-        chosen-class="chosen"
-        selector="selector"
-        :animation="500"
-        :sort="true"
-        class="panel"
+        v-model="nodelist" item-key="id" group="itxst" ghost-class="ghost" chosen-class="chosen"
+        selector="selector" :animation="500" :sort="true" class="panel"
       >
         <template #item="{ element, index }">
           <div class="panel-item" :class="activeClass(element)" @click="activeClick(element)">
             <!-- <span>
               {{ element.displayName }}
             </span> -->
-            <Component
-              :is="element.ctype"
-              v-bind="element"
-              v-model="element.value"
-              class="item-box"
-            />
+            <Component :is="element.ctype" v-bind="element" v-model="element.value" class="item-box" />
             <span @click.stop="deleteIcon(index)">
               <TIcon name="delete" class="delete-icon" style="color: red" />
             </span>
@@ -53,40 +37,32 @@
     <div class="node-config">
       <TTabs v-model="tabPanelValue">
         <!-- 默认插槽 和 具名插槽（panel）都是用来渲染面板内容 -->
-        <TTabPanel
-          value="configSet"
-          label="属性设置"
-          :destroy-on-hide="false"
-          class="tabPanelContainer"
-        >
-          <div v-for="(itemKeyName, index) in keys(activeSchema)" :key="index">
+
+        <TTabPanel value="configSet" label="属性设置" :destroy-on-hide="false" class="tabPanelContainer">
+          <div v-for="(itemKeyName, index) in keys(activeSchema)" :key="index" class="config-item">
             <div v-if="activeSchema[itemKeyName].ctype !== 'object'">
-              <span>
-                {{ activeSchema[itemKeyName].displayName }}
-              </span>
-              <Component
-                :is="activeSchema[itemKeyName].ctype"
-                v-bind="activeSchema[itemKeyName]"
-                v-model="activeNode[itemKeyName]"
-                :m-context="activeNode"
-                class="item-box"
-              />
+              <div v-show="showCompont(activeNode, activeSchema[itemKeyName])">
+                <span>
+                  {{ `${activeSchema[itemKeyName].displayName}` }}
+                </span>
+                <Component
+                  :is="activeSchema[itemKeyName].ctype" v-bind="activeSchema[itemKeyName]"
+                  v-model="activeNode[itemKeyName]" :m-context="activeNode" class="item-box"
+                />
+              </div>
             </div>
             <div v-else>
               <span>
                 {{ `${activeSchema[itemKeyName].displayName}` }}
               </span>
-              <div
-                v-for="(objKey, o_index) in keys(activeSchema[itemKeyName].child)"
-                :key="o_index"
-                class="item-box"
-              >
-                <span>{{ `${activeSchema[itemKeyName].child[objKey].displayName}` }}</span>
-                <Component
-                  :is="activeSchema[itemKeyName].child[objKey].ctype"
-                  v-model="activeNode[itemKeyName][objKey]"
-                  class="item-box"
-                />
+              <div v-for="(objKey, o_index) in keys(activeSchema[itemKeyName].child)" :key="o_index" class="item-box">
+                <div>
+                  <span>{{ `${activeSchema[itemKeyName].child[objKey].displayName}` }}</span>
+                  <Component
+                    :is="activeSchema[itemKeyName].child[objKey].ctype" v-model="activeNode[itemKeyName][objKey]"
+                    class="item-box"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -164,6 +140,21 @@ watch(activeNode, (val) => {
 });
 
 const tabPanelValue = ref("configSet");
+
+const showCompont = computed(() => (context: any, configItemSchema: any): Boolean => {
+  // console.log("context -->", context);
+  // console.log("configItemSchema -->", configItemSchema);
+
+  const express = configItemSchema?.editor?.hide;
+  if (express) {
+    // eslint-disable-next-line no-new-func
+    const handler = new Function("context", "express", `return ${express}`);
+    // console.log("handler -->", handler);
+
+    return handler(context, express);
+  }
+  return true;
+});
 </script>
 
 <style lang="scss">
@@ -182,6 +173,7 @@ const tabPanelValue = ref("configSet");
     background-color: white;
     flex: 1;
     padding: 10px;
+
     .panel {
       width: 100%;
       max-width: 1500px;
@@ -197,8 +189,10 @@ const tabPanelValue = ref("configSet");
         align-items: center;
         justify-content: space-between;
         margin-bottom: 10px;
+
         .item-box {
           margin-right: 10px;
+
           .delete-icon {
             margin-right: 10px;
           }
@@ -217,9 +211,14 @@ const tabPanelValue = ref("configSet");
     height: 850px;
     background-color: #f2f2f2;
     padding: 10px;
+
     .tabPanelContainer {
       height: 850px;
       padding: 10px;
+
+      .config-item {
+        margin-bottom: 10px;
+      }
     }
   }
 
